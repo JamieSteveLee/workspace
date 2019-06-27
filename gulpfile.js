@@ -27,8 +27,8 @@ gulp.task('scripts', function() {
 });
 
 gulp.task('watch',function() {
-	gulp.watch('scss/**/*.scss',['styles']);
-	gulp.watch('js/**/*.js',['scripts']);
+	gulp.watch('scss/**/*.scss',gulp.series('styles'));
+	gulp.watch('js/**/*.js',gulp.series('scripts'));
 });
 
-gulp.task('default', ['watch', 'scripts', 'styles']);
+gulp.task('default', gulp.series('watch', 'scripts', 'styles'));
