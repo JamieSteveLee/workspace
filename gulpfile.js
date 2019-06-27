@@ -1,23 +1,23 @@
-var gulp = require('gulp');
-var sass = require('gulp-sass');
-var uglify = require('gulp-uglify');
-var concat = require('gulp-concat');
-var babel  = require('gulp-babel');
+const gulp = require('gulp');
+const sass = require('gulp-sass');
+const uglify = require('gulp-uglify');
+const concat = require('gulp-concat');
+const babel  = require('gulp-babel');
 
-gulp.task('styles', function() {
-	gulp.src('scss/**/*.scss')
+gulp.task('styles', ()=> {
+	return gulp.src('src/scss/**/*.scss')
 		.pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
 		.pipe(concat('styles.min.css'))
 		.pipe(gulp.dest('.'))
 });
 
-gulp.task('scripts', function() {
+gulp.task('scripts', ()=> {
 	function createErrorHandler(name) {
-		return function (err) {
+		return (err) => {
 			console.error('Error from ' + name + ' in scripts task', err.toString());
 		};
 	}
-	return gulp.src(['js/*.js'])
+	return gulp.src(['src/js/**/*.js'])
 		.pipe(babel({presets: ['env']}))
 		.pipe(uglify())
 		.on('error', createErrorHandler('uglify'))
@@ -26,9 +26,9 @@ gulp.task('scripts', function() {
 		.pipe(gulp.dest('.'));
 });
 
-gulp.task('watch',function() {
-	gulp.watch('scss/**/*.scss',gulp.series('styles'));
-	gulp.watch('js/**/*.js',gulp.series('scripts'));
+gulp.task('watch', ()=> {
+	gulp.watch('src/scss/**/*.scss', gulp.parallel('styles'));
+	gulp.watch('src/js/**/*.js', gulp.parallel('scripts'));
 });
 
-gulp.task('default', gulp.series('watch', 'scripts', 'styles'));
+gulp.task('default', gulp.series('scripts', 'styles', 'watch'));
