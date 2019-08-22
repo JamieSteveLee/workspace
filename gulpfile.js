@@ -18,7 +18,7 @@ gulp.task('scripts', ()=> {
 		};
 	}
 	return gulp.src(['src/js/**/*.js'])
-		.pipe(babel({presets: ['env']}))
+		.pipe(babel({presets: ['@babel/env']}))
 		.pipe(uglify())
 		.on('error', createErrorHandler('uglify'))
 		.pipe(concat('scripts.min.js'))
